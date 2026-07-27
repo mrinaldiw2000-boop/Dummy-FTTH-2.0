@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive Dashboard - FTTH Enterprise Project</title>
+
+  <!-- Google Fonts & Bootstrap 5 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- FontAwesome, Animate.css, DataTables -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="spinner-ftth mb-3"></div>
+    <div class="fw-bold text-primary">Loading Executive Dashboard...</div>
+  </div>
+
+  <div class="app-wrapper">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-brand">
+          <i class="fas fa-network-wired"></i>
+          <span class="brand-text">FTTH Enterprise</span>
+        </a>
+        <button class="sidebar-toggle" id="sidebar-toggle-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item">
+          <a href="dashboard.html" class="menu-link active">
+            <i class="fas fa-home"></i>
+            <span class="menu-text">Dashboard</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="upload.html" class="menu-link">
+            <i class="fas fa-file-upload"></i>
+            <span class="menu-text">Upload Report</span>
+          </a>
+        </li>
+
+        <li class="menu-category">Progress Tracking</li>
+        <li class="menu-item">
+          <a href="daily.html" class="menu-link">
+            <i class="fas fa-chart-line"></i>
+            <span class="menu-text">Daily Progress</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="weekly.html" class="menu-link">
+            <i class="fas fa-calendar-week"></i>
+            <span class="menu-text">Weekly Progress</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="monthly.html" class="menu-link">
+            <i class="fas fa-calendar-alt"></i>
+            <span class="menu-text">Monthly Progress</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="map.html" class="menu-link">
+            <i class="fas fa-map-marked-alt"></i>
+            <span class="menu-text">GIS Map</span>
+          </a>
+        </li>
+
+        <li class="menu-category">Management & Analytics</li>
+        <li class="menu-item">
+          <a href="vendor.html" class="menu-link">
+            <i class="fas fa-hard-hat"></i>
+            <span class="menu-text">Vendor Performance</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="supervisor.html" class="menu-link">
+            <i class="fas fa-user-tie"></i>
+            <span class="menu-text">Supervisor</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="issue.html" class="menu-link">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span class="menu-text">Issue Tracking</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="analytics.html" class="menu-link">
+            <i class="fas fa-chart-pie"></i>
+            <span class="menu-text">Analytics</span>
+          </a>
+        </li>
+
+        <li class="menu-category">System</li>
+        <li class="menu-item">
+          <a href="#" class="menu-link logout-trigger">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="menu-text">Logout</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Navbar Top -->
+      <nav class="navbar-top">
+        <div class="navbar-left">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Global search sites, ODP...">
+          </div>
+        </div>
+
+        <div class="navbar-right">
+          <button class="nav-icon-btn" id="auto-refresh-btn" title="Refresh Data">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+          <button class="nav-icon-btn" id="theme-toggle-btn" title="Toggle Light/Dark Theme">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button class="nav-icon-btn" id="fullscreen-btn" title="Fullscreen">
+            <i class="fas fa-expand"></i>
+          </button>
+          <button class="nav-icon-btn" id="notif-btn" title="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" id="notification-badge"></span>
+          </button>
+
+          <div class="user-profile-menu">
+            <div class="user-avatar">A</div>
+            <div class="user-info">
+              <span class="user-name">Administrator</span>
+              <span class="user-role">FTTH Project Lead</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Page Body Container -->
+      <div class="page-container">
+        <!-- Page Header Title -->
+        <div class="page-header">
+          <div class="page-title-group">
+            <h1>Executive Project Dashboard</h1>
+            <p>FTTH Enterprise deployment monitoring, progress tracking, and performance analytics.</p>
+          </div>
+          <div>
+            <a href="upload.html" class="btn btn-ftth-accent">
+              <i class="fas fa-cloud-upload-alt me-1"></i> Upload Excel Report
+            </a>
+          </div>
+        </div>
+
+        <!-- Global Multi-Criteria Filter Bar -->
+        <div class="filter-bar">
+          <div class="filter-grid">
+            <div class="filter-group">
+              <label><i class="fas fa-map-marker-alt me-1"></i> Area</label>
+              <select id="filter-area" class="filter-control">
+                <option value="">All Areas</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label><i class="fas fa-hard-hat me-1"></i> Vendor</label>
+              <select id="filter-vendor" class="filter-control">
+                <option value="">All Vendors</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label><i class="fas fa-user-tie me-1"></i> Supervisor</label>
+              <select id="filter-supervisor" class="filter-control">
+                <option value="">All Supervisors</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label><i class="fas fa-info-circle me-1"></i> Status</label>
+              <select id="filter-status" class="filter-control">
+                <option value="">All Statuses</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <button class="btn btn-ftth-outline w-100" id="reset-filters-btn">
+                <i class="fas fa-undo me-1"></i> Reset
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 13 KPI Cards Grid -->
+        <div class="kpi-grid">
+          <div class="card-ftth kpi-card">
+            <div class="kpi-icon-box kpi-icon-blue"><i class="fas fa-globe"></i></div>
+            <div class="kpi-content">
+              <span class="kpi-label">Total Area</span>
+              <span class="kpi-value" id="kpi-total-area">0</span>
+            </div>
+          </div>
+
+          <div class="card-ftth kpi-card">
+            <div class="kpi-icon-box kpi-icon-orange"><i class="fas fa-sitemap"></i></div>
+            <div class="kpi-content">
+              <span class="kpi-label">Total Cluster</span>
+              <span class="kpi-value" id="kpi-total-cluster">0</span>
+            </div>
+          </div>
+
+          <div class="card-ftth kpi-card">
+            <div class="kpi-icon-box kpi-icon-green"><i class="fas fa-network-wired"></i></div>
+            <div class="kpi-content">
+              <span class="kpi-label">Total POP</span>
+              <span class="kpi-value" id="kpi-total-pop">0</span>
+            </div>
+          </div>
+
+          <div class="card-ftth kpi-card">
+            <div class="kpi-icon-box kpi-icon-purple"><i class="fas fa-box"></i></div>
+            <div class="kpi-content">
+              <span class="kpi-label">Total ODC</span>
+              <span class="kpi-value" id="kpi-total-odc">0</span>
+            </div>
+          </div>
+
+          <div class="card-ftth kpi-card">
+            <div class="kpi-icon-box kpi-icon-teal"><i class="fas fa-plug"></i></div>
+            <div class="kpi-content">
+              <span class="kpi-label">Total ODP</span>
+              <span class="kpi-value" id="kpi-total-odp">0</span>
+            </div>
+          </div>
+
+          <div class="card-ftth kpi-card">
+            <div class="kpi-icon-box kpi-icon-blue"><i class="fas fa-bullseye"></i></div>
+            <div class="kpi-content">
+              <span class="kpi-label">Target Homepass</span>
+              <span class="kpi-value" id="kpi-target-hp">0 HP</span>
+            </div>
+          </div>
+
+          <div class="card-ftth kpi-card">
+            <div class="kpi-icon-box kpi-icon-green"><i class="fas fa-check-circle"></i></div>
+            <div class="kpi-content">
+              <span class="kpi-label">Actual Homepass</span>
+              <span class="kpi-value" id="kpi-actual-hp">0 HP</span>
+            </div>
+          </div>
+
+          <div class="card-ftth kpi-card">
+            <div class="kpi-icon-box kpi-icon-red"><i class="fas fa-hourglass-half"></i></div>
+            <div class="kpi-content">
+              <span class="kpi-label">Remaining</span>
+              <span class="kpi-value" id="kpi-remaining-hp">0 HP</span>
+            </div>
+          </div>
+
+          <div class="card-ftth kpi-card">
+            <div class="kpi-icon-box kpi-icon-orange"><i class="fas fa-trophy"></i></div>
+            <div class="kpi-content">
+              <span class="kpi-label">Achievement %</span>
+              <span class="kpi-value text-accent" id="kpi-achievement">0%</span>
+            </div>
+          </div>
+
+          <div class="card-ftth kpi-card">
+            <div class="kpi-icon-box kpi-icon-teal"><i class="fas fa-tasks"></i></div>
+            <div class="kpi-content">
+              <span class="kpi-label">Project Progress</span>
+              <span class="kpi-value" id="kpi-project-progress">0%</span>
+            </div>
+          </div>
+
+          <div class="card-ftth kpi-card">
+            <div class="kpi-icon-box kpi-icon-blue"><i class="fas fa-calendar-day"></i></div>
+            <div class="kpi-content">
+              <span class="kpi-label">Daily Progress</span>
+              <span class="kpi-value" id="kpi-daily-progress">0%</span>
+            </div>
+          </div>
+
+          <div class="card-ftth kpi-card">
+            <div class="kpi-icon-box kpi-icon-purple"><i class="fas fa-calendar-week"></i></div>
+            <div class="kpi-content">
+              <span class="kpi-label">Weekly Progress</span>
+              <span class="kpi-value" id="kpi-weekly-progress">0%</span>
+            </div>
+          </div>
+
+          <div class="card-ftth kpi-card">
+            <div class="kpi-icon-box kpi-icon-green"><i class="fas fa-calendar-alt"></i></div>
+            <div class="kpi-content">
+              <span class="kpi-label">Monthly Progress</span>
+              <span class="kpi-value" id="kpi-monthly-progress">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Grid Section (10 Charts) -->
+        <div class="row g-4 mb-4">
+          <!-- 1. Line Chart: Daily Progress -->
+          <div class="col-lg-6">
+            <div class="card-ftth">
+              <div class="card-ftth-header">
+                <h5 class="card-ftth-title"><i class="fas fa-chart-line"></i> Daily Progress Trend</h5>
+              </div>
+              <div class="card-ftth-body">
+                <div class="chart-container"><canvas id="chart-daily-progress"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Line Chart: Weekly Progress -->
+          <div class="col-lg-6">
+            <div class="card-ftth">
+              <div class="card-ftth-header">
+                <h5 class="card-ftth-title"><i class="fas fa-calendar-week"></i> Weekly Cumulative Progress</h5>
+              </div>
+              <div class="card-ftth-body">
+                <div class="chart-container"><canvas id="chart-weekly-progress"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Bar Chart: Progress per Area -->
+          <div class="col-lg-6">
+            <div class="card-ftth">
+              <div class="card-ftth-header">
+                <h5 class="card-ftth-title"><i class="fas fa-chart-bar"></i> Homepass Progress per Area</h5>
+              </div>
+              <div class="card-ftth-body">
+                <div class="chart-container"><canvas id="chart-area-progress"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Bar Chart: Progress per Cluster -->
+          <div class="col-lg-6">
+            <div class="card-ftth">
+              <div class="card-ftth-header">
+                <h5 class="card-ftth-title"><i class="fas fa-th-large"></i> Homepass Progress per Cluster</h5>
+              </div>
+              <div class="card-ftth-body">
+                <div class="chart-container"><canvas id="chart-cluster-progress"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Horizontal Bar: Top 10 Cluster -->
+          <div class="col-lg-6">
+            <div class="card-ftth">
+              <div class="card-ftth-header">
+                <h5 class="card-ftth-title"><i class="fas fa-trophy"></i> Top Performing Clusters</h5>
+              </div>
+              <div class="card-ftth-body">
+                <div class="chart-container"><canvas id="chart-top-clusters"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Pie Chart: Status Project -->
+          <div class="col-lg-6">
+            <div class="card-ftth">
+              <div class="card-ftth-header">
+                <h5 class="card-ftth-title"><i class="fas fa-pie-chart"></i> Project Status Distribution</h5>
+              </div>
+              <div class="card-ftth-body">
+                <div class="chart-container"><canvas id="chart-status-pie"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Doughnut Chart: Vendor Performance -->
+          <div class="col-lg-6">
+            <div class="card-ftth">
+              <div class="card-ftth-header">
+                <h5 class="card-ftth-title"><i class="fas fa-hard-hat"></i> Vendor Workload Share</h5>
+              </div>
+              <div class="card-ftth-body">
+                <div class="chart-container"><canvas id="chart-vendor-doughnut"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. Radar Chart: Supervisor Performance -->
+          <div class="col-lg-6">
+            <div class="card-ftth">
+              <div class="card-ftth-header">
+                <h5 class="card-ftth-title"><i class="fas fa-user-shield"></i> Supervisor KPI Multi-Axis</h5>
+              </div>
+              <div class="card-ftth-body">
+                <div class="chart-container"><canvas id="chart-supervisor-radar"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 9. Area Chart: Achievement Trend -->
+          <div class="col-lg-6">
+            <div class="card-ftth">
+              <div class="card-ftth-header">
+                <h5 class="card-ftth-title"><i class="fas fa-chart-area"></i> Monthly Achievement S-Curve</h5>
+              </div>
+              <div class="card-ftth-body">
+                <div class="chart-container"><canvas id="chart-achievement-trend"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 10. Gauge Chart: Overall Achievement -->
+          <div class="col-lg-6">
+            <div class="card-ftth">
+              <div class="card-ftth-header">
+                <h5 class="card-ftth-title"><i class="fas fa-tachometer-alt"></i> Overall Project Achievement Gauge</h5>
+              </div>
+              <div class="card-ftth-body">
+                <div class="chart-container"><canvas id="chart-overall-gauge"></canvas></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DataTables Section -->
+        <div class="card-ftth mb-4">
+          <div class="card-ftth-header">
+            <h5 class="card-ftth-title"><i class="fas fa-table me-2"></i> FTTH Master Data Table</h5>
+          </div>
+          <div class="card-ftth-body">
+            <div class="table-responsive">
+              <table id="ftth-project-datatable" class="table table-striped align-middle w-100"></table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Dependencies Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+  <!-- DataTables Export Buttons -->
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="js/sample-data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/datatable.js"></script>
+</body>
+</html>

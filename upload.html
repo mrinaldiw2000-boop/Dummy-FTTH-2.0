@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Report - FTTH Enterprise</title>
+
+  <!-- Google Fonts & Bootstrap 5 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- FontAwesome & Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <div id="loading-screen">
+    <div class="spinner-ftth mb-3"></div>
+    <div class="fw-bold text-primary">Loading Upload Page...</div>
+  </div>
+
+  <div class="app-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-brand">
+          <i class="fas fa-network-wired"></i>
+          <span class="brand-text">FTTH Enterprise</span>
+        </a>
+        <button class="sidebar-toggle" id="sidebar-toggle-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item"><a href="dashboard.html" class="menu-link"><i class="fas fa-home"></i><span class="menu-text">Dashboard</span></a></li>
+        <li class="menu-item"><a href="upload.html" class="menu-link active"><i class="fas fa-file-upload"></i><span class="menu-text">Upload Report</span></a></li>
+
+        <li class="menu-category">Progress Tracking</li>
+        <li class="menu-item"><a href="daily.html" class="menu-link"><i class="fas fa-chart-line"></i><span class="menu-text">Daily Progress</span></a></li>
+        <li class="menu-item"><a href="weekly.html" class="menu-link"><i class="fas fa-calendar-week"></i><span class="menu-text">Weekly Progress</span></a></li>
+        <li class="menu-item"><a href="monthly.html" class="menu-link"><i class="fas fa-calendar-alt"></i><span class="menu-text">Monthly Progress</span></a></li>
+        <li class="menu-item"><a href="map.html" class="menu-link"><i class="fas fa-map-marked-alt"></i><span class="menu-text">GIS Map</span></a></li>
+
+        <li class="menu-category">Management & Analytics</li>
+        <li class="menu-item"><a href="vendor.html" class="menu-link"><i class="fas fa-hard-hat"></i><span class="menu-text">Vendor Performance</span></a></li>
+        <li class="menu-item"><a href="supervisor.html" class="menu-link"><i class="fas fa-user-tie"></i><span class="menu-text">Supervisor</span></a></li>
+        <li class="menu-item"><a href="issue.html" class="menu-link"><i class="fas fa-exclamation-triangle"></i><span class="menu-text">Issue Tracking</span></a></li>
+        <li class="menu-item"><a href="analytics.html" class="menu-link"><i class="fas fa-chart-pie"></i><span class="menu-text">Analytics</span></a></li>
+
+        <li class="menu-category">System</li>
+        <li class="menu-item"><a href="#" class="menu-link logout-trigger"><i class="fas fa-sign-out-alt"></i><span class="menu-text">Logout</span></a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Navbar -->
+      <nav class="navbar-top">
+        <div class="navbar-left">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search FAT reports...">
+          </div>
+        </div>
+        <div class="navbar-right">
+          <button class="nav-icon-btn" id="theme-toggle-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+          <button class="nav-icon-btn" id="fullscreen-btn" title="Fullscreen"><i class="fas fa-expand"></i></button>
+          <button class="nav-icon-btn" id="notif-btn"><i class="fas fa-bell"></i><span class="notification-badge" id="notification-badge"></span></button>
+          <div class="user-profile-menu">
+            <div class="user-avatar">A</div>
+            <div class="user-info"><span class="user-name">Administrator</span><span class="user-role">FTTH Lead</span></div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Page Container -->
+      <div class="page-container">
+        <div class="page-header">
+          <div class="page-title-group">
+            <h1>Upload FTTH FAT Port Report</h1>
+            <p>Import Excel files (.xlsx, .xls) matching FAT Port layout: No, City, Area, FAT, Tikor FAT, Date RFS, Years, MITRA, Action, PORT (IDDLE, USED, TOTAL).</p>
+          </div>
+          <div>
+            <button class="btn btn-ftth-outline" id="download-template-btn">
+              <i class="fas fa-file-excel text-success me-1"></i> Download Template (.xlsx)
+            </button>
+          </div>
+        </div>
+
+        <!-- Upload Dropzone Card -->
+        <div class="card-ftth mb-4">
+          <div class="card-ftth-body p-4">
+            <div class="upload-dropzone" id="upload-dropzone">
+              <input type="file" id="excel-file-input" accept=".xlsx, .xls" class="d-none">
+              <i class="fas fa-cloud-upload-alt dropzone-icon"></i>
+              <h4 class="fw-bold mb-2">Drag & Drop FAT Report Excel Here</h4>
+              <p class="text-muted fs-6 mb-3">Supports Microsoft Excel .xlsx and .xls formats</p>
+              <button class="btn btn-ftth-accent px-4 py-2" id="browse-file-btn">
+                <i class="fas fa-folder-open me-1"></i> Browse File
+              </button>
+            </div>
+
+            <!-- Upload Progress Bar -->
+            <div class="mt-4 d-none" id="upload-progress-container">
+              <div class="d-flex justify-content-between mb-2 fs-7 text-muted">
+                <span>Reading File: <strong id="file-name-display">filename.xlsx</strong></span>
+                <span>SheetJS Parsing Headers & Data...</span>
+              </div>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" id="upload-progress-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- File Live Preview & Mapping Section -->
+        <div class="card-ftth d-none" id="upload-preview-section">
+          <div class="card-ftth-header">
+            <h5 class="card-ftth-title"><i class="fas fa-eye"></i> Excel Live Data Preview (First 10 Rows)</h5>
+            <div class="d-flex gap-2">
+              <button class="btn btn-ftth-outline btn-sm text-danger" id="reset-btn">
+                <i class="fas fa-trash-alt me-1"></i> Reset / Delete
+              </button>
+              <button class="btn btn-ftth-accent btn-sm" id="import-btn" disabled>
+                <i class="fas fa-check-circle me-1"></i> Confirm & Import to Dashboard
+              </button>
+            </div>
+          </div>
+          <div class="card-ftth-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover align-middle fs-7">
+                <thead class="table-light align-middle text-center">
+                  <tr>
+                    <th rowspan="2">No</th>
+                    <th rowspan="2">City</th>
+                    <th rowspan="2">Area</th>
+                    <th rowspan="2">FAT</th>
+                    <th rowspan="2">Tikor FAT</th>
+                    <th rowspan="2">Date RFS</th>
+                    <th rowspan="2">MITRA</th>
+                    <th rowspan="2">Action</th>
+                    <th colspan="3" class="bg-primary text-white">PORT</th>
+                  </tr>
+                  <tr>
+                    <th class="bg-info text-white">IDDLE</th>
+                    <th class="bg-success text-white">USED</th>
+                    <th class="bg-secondary text-white">TOTAL</th>
+                  </tr>
+                </thead>
+                <tbody id="preview-table-body">
+                  <!-- Dynamic preview rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="js/sample-data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/upload.js"></script>
+</body>
+</html>

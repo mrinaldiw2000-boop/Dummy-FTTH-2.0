@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Performance - FTTH Enterprise</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <div id="loading-screen">
+    <div class="spinner-ftth mb-3"></div>
+    <div class="fw-bold text-primary">Loading Vendor Performance...</div>
+  </div>
+
+  <div class="app-wrapper">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-brand">
+          <i class="fas fa-network-wired"></i>
+          <span class="brand-text">FTTH Enterprise</span>
+        </a>
+        <button class="sidebar-toggle" id="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item"><a href="dashboard.html" class="menu-link"><i class="fas fa-home"></i><span class="menu-text">Dashboard</span></a></li>
+        <li class="menu-item"><a href="upload.html" class="menu-link"><i class="fas fa-file-upload"></i><span class="menu-text">Upload Report</span></a></li>
+
+        <li class="menu-category">Progress Tracking</li>
+        <li class="menu-item"><a href="daily.html" class="menu-link"><i class="fas fa-chart-line"></i><span class="menu-text">Daily Progress</span></a></li>
+        <li class="menu-item"><a href="weekly.html" class="menu-link"><i class="fas fa-calendar-week"></i><span class="menu-text">Weekly Progress</span></a></li>
+        <li class="menu-item"><a href="monthly.html" class="menu-link"><i class="fas fa-calendar-alt"></i><span class="menu-text">Monthly Progress</span></a></li>
+        <li class="menu-item"><a href="map.html" class="menu-link"><i class="fas fa-map-marked-alt"></i><span class="menu-text">GIS Map</span></a></li>
+
+        <li class="menu-category">Management & Analytics</li>
+        <li class="menu-item"><a href="vendor.html" class="menu-link active"><i class="fas fa-hard-hat"></i><span class="menu-text">Vendor Performance</span></a></li>
+        <li class="menu-item"><a href="supervisor.html" class="menu-link"><i class="fas fa-user-tie"></i><span class="menu-text">Supervisor</span></a></li>
+        <li class="menu-item"><a href="issue.html" class="menu-link"><i class="fas fa-exclamation-triangle"></i><span class="menu-text">Issue Tracking</span></a></li>
+        <li class="menu-item"><a href="analytics.html" class="menu-link"><i class="fas fa-chart-pie"></i><span class="menu-text">Analytics</span></a></li>
+        <li class="menu-item"><a href="#" class="menu-link logout-trigger"><i class="fas fa-sign-out-alt"></i><span class="menu-text">Logout</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <nav class="navbar-top">
+        <div class="navbar-left"><div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search vendors..."></div></div>
+        <div class="navbar-right">
+          <button class="nav-icon-btn" id="theme-toggle-btn"><i class="fas fa-moon"></i></button>
+          <button class="nav-icon-btn" id="fullscreen-btn"><i class="fas fa-expand"></i></button>
+          <button class="nav-icon-btn" id="notif-btn"><i class="fas fa-bell"></i><span class="notification-badge" id="notification-badge"></span></button>
+          <div class="user-profile-menu"><div class="user-avatar">A</div><div class="user-info"><span class="user-name">Administrator</span><span class="user-role">FTTH Lead</span></div></div>
+        </div>
+      </nav>
+
+      <div class="page-container">
+        <div class="page-header">
+          <div class="page-title-group">
+            <h1>Vendor Performance Leaderboard</h1>
+            <p>Contractor evaluation, project completion speed, target HP realization, & SLA compliance.</p>
+          </div>
+        </div>
+
+        <!-- Vendor Leaderboard Table -->
+        <div class="card-ftth mb-4">
+          <div class="card-ftth-header">
+            <h5 class="card-ftth-title"><i class="fas fa-trophy text-warning me-2"></i> Contractor Ranking & Achievement</h5>
+          </div>
+          <div class="card-ftth-body">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Rank</th>
+                    <th>Vendor Name</th>
+                    <th>Total Sites</th>
+                    <th>Completed</th>
+                    <th>Target HP</th>
+                    <th>Actual HP</th>
+                    <th>Avg Speed</th>
+                    <th>Achievement</th>
+                  </tr>
+                </thead>
+                <tbody id="vendor-leaderboard-body">
+                  <!-- JS dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/sample-data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const data = getStoredProjectData();
+      const vendorMap = {};
+
+      data.forEach(item => {
+        const v = item.Vendor || "Other";
+        if (!vendorMap[v]) {
+          vendorMap[v] = { name: v, sites: 0, completed: 0, target: 0, actual: 0 };
+        }
+        vendorMap[v].sites += 1;
+        if (item.Status === "Completed") vendorMap[v].completed += 1;
+        vendorMap[v].target += (parseInt(item.TargetHP) || 0);
+        vendorMap[v].actual += (parseInt(item.ActualHP) || 0);
+      });
+
+      const list = Object.values(vendorMap).sort((a,b) => (b.actual/b.target) - (a.actual/a.target));
+      const tbody = document.getElementById("vendor-leaderboard-body");
+
+      if (tbody) {
+        list.forEach((v, index) => {
+          const pct = v.target > 0 ? Math.round((v.actual / v.target) * 100) : 0;
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><span class="badge bg-primary rounded-circle p-2 fs-6">#${index + 1}</span></td>
+            <td><strong class="text-primary fs-6">${v.name}</strong></td>
+            <td>${v.sites} Sites</td>
+            <td><span class="badge-ftth badge-ftth-success">${v.completed} Completed</span></td>
+            <td>${v.target.toLocaleString()} HP</td>
+            <td><strong>${v.actual.toLocaleString()} HP</strong></td>
+            <td><i class="fas fa-clock text-warning me-1"></i> 14 Days / Site</td>
+            <td><span class="badge-ftth ${pct >= 85 ? 'badge-ftth-success' : 'badge-ftth-warning'} fs-6">${pct}%</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

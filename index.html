@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FTTH Enterprise Dashboard - Redirecting...</title>
+  <script>
+    // Safe Entry Point Redirect Guard
+    try {
+      const user = localStorage.getItem("ftth_auth_user");
+      if (user) {
+        window.location.href = "dashboard.html";
+      } else {
+        window.location.href = "login.html";
+      }
+    } catch(e) {
+      window.location.href = "login.html";
+    }
+  </script>
+</head>
+<body>
+</body>
+</html>

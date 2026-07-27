@@ -1,0 +1,75 @@
+/* ==========================================================================
+   PROJECT FTTH ENTERPRISE DASHBOARD - RESPONSIVE STYLES
+   ========================================================================== */
+
+/* Laptop / Desktop Adjustments (<= 1200px) */
+@media (max-width: 1200px) {
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tablet Screens (<= 992px) */
+@media (max-width: 992px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 260px !important;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .navbar-top {
+    padding: 0 1rem;
+  }
+
+  .search-box {
+    width: 180px;
+  }
+}
+
+/* Mobile Screens (<= 576px) */
+@media (max-width: 576px) {
+  .page-container {
+    padding: 1rem;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-box {
+    display: none;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .chart-container {
+    height: 260px;
+  }
+
+  #map-canvas {
+    height: 400px;
+  }
+}

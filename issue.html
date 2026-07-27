@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue Tracking - FTTH Enterprise</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <div id="loading-screen">
+    <div class="spinner-ftth mb-3"></div>
+    <div class="fw-bold text-primary">Loading Issue Tracking...</div>
+  </div>
+
+  <div class="app-wrapper">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-brand">
+          <i class="fas fa-network-wired"></i>
+          <span class="brand-text">FTTH Enterprise</span>
+        </a>
+        <button class="sidebar-toggle" id="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item"><a href="dashboard.html" class="menu-link"><i class="fas fa-home"></i><span class="menu-text">Dashboard</span></a></li>
+        <li class="menu-item"><a href="upload.html" class="menu-link"><i class="fas fa-file-upload"></i><span class="menu-text">Upload Report</span></a></li>
+
+        <li class="menu-category">Progress Tracking</li>
+        <li class="menu-item"><a href="daily.html" class="menu-link"><i class="fas fa-chart-line"></i><span class="menu-text">Daily Progress</span></a></li>
+        <li class="menu-item"><a href="weekly.html" class="menu-link"><i class="fas fa-calendar-week"></i><span class="menu-text">Weekly Progress</span></a></li>
+        <li class="menu-item"><a href="monthly.html" class="menu-link"><i class="fas fa-calendar-alt"></i><span class="menu-text">Monthly Progress</span></a></li>
+        <li class="menu-item"><a href="map.html" class="menu-link"><i class="fas fa-map-marked-alt"></i><span class="menu-text">GIS Map</span></a></li>
+
+        <li class="menu-category">Management & Analytics</li>
+        <li class="menu-item"><a href="vendor.html" class="menu-link"><i class="fas fa-hard-hat"></i><span class="menu-text">Vendor Performance</span></a></li>
+        <li class="menu-item"><a href="supervisor.html" class="menu-link"><i class="fas fa-user-tie"></i><span class="menu-text">Supervisor</span></a></li>
+        <li class="menu-item"><a href="issue.html" class="menu-link active"><i class="fas fa-exclamation-triangle"></i><span class="menu-text">Issue Tracking</span></a></li>
+        <li class="menu-item"><a href="analytics.html" class="menu-link"><i class="fas fa-chart-pie"></i><span class="menu-text">Analytics</span></a></li>
+        <li class="menu-item"><a href="#" class="menu-link logout-trigger"><i class="fas fa-sign-out-alt"></i><span class="menu-text">Logout</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <nav class="navbar-top">
+        <div class="navbar-left"><div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search issues..."></div></div>
+        <div class="navbar-right">
+          <button class="nav-icon-btn" id="theme-toggle-btn"><i class="fas fa-moon"></i></button>
+          <button class="nav-icon-btn" id="fullscreen-btn"><i class="fas fa-expand"></i></button>
+          <button class="nav-icon-btn" id="notif-btn"><i class="fas fa-bell"></i><span class="notification-badge" id="notification-badge"></span></button>
+          <div class="user-profile-menu"><div class="user-avatar">A</div><div class="user-info"><span class="user-name">Administrator</span><span class="user-role">FTTH Lead</span></div></div>
+        </div>
+      </nav>
+
+      <div class="page-container">
+        <div class="page-header">
+          <div class="page-title-group">
+            <h1>Field Issue & Obstacle Tracking</h1>
+            <p>ROW permission bottlenecks, fiber breaks, material shortages & resolution status.</p>
+          </div>
+        </div>
+
+        <div class="card-ftth">
+          <div class="card-ftth-header">
+            <h5 class="card-ftth-title"><i class="fas fa-exclamation-triangle text-danger me-2"></i> Active Field Issues</h5>
+          </div>
+          <div class="card-ftth-body">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Issue ID</th>
+                    <th>Date</th>
+                    <th>Area & Cluster</th>
+                    <th>Description</th>
+                    <th>Severity</th>
+                    <th>PIC & Vendor</th>
+                    <th>Progress</th>
+                    <th>Photo Evidence</th>
+                  </tr>
+                </thead>
+                <tbody id="issue-table-body">
+                  <!-- Dynamic JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/sample-data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tbody = document.getElementById("issue-table-body");
+      if (tbody && typeof FTTH_SAMPLE_ISSUES !== "undefined") {
+        FTTH_SAMPLE_ISSUES.forEach(issue => {
+          let sevBadge = "badge-ftth-warning";
+          if (issue.Severity === "Critical") sevBadge = "badge-ftth-danger";
+          else if (issue.Severity === "Medium") sevBadge = "badge-ftth-info";
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><strong class="text-primary font-monospace">${issue.IssueID}</strong></td>
+            <td>${issue.Date}</td>
+            <td><div><strong>${issue.Area}</strong></div><small class="text-muted">${issue.Cluster}</small></td>
+            <td style="max-width: 250px;">${issue.Issue}</td>
+            <td><span class="badge-ftth ${sevBadge}">${issue.Severity}</span></td>
+            <td><div><strong>${issue.PIC}</strong></div><small class="text-muted">${issue.Vendor}</small></td>
+            <td><div class="progress" style="height:6px;"><div class="progress-bar bg-warning" style="width:${issue.Progress};"></div></div><small>${issue.Progress}</small></td>
+            <td><button class="btn btn-sm btn-ftth-outline" onclick="showToast('Photo evidence available on site inspection report','info')"><i class="fas fa-camera text-primary me-1"></i> View Photo</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
